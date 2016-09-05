@@ -1,0 +1,270 @@
+
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+
+//
+//
+//  First attempts at a game machine.
+//
+//
+//  Zak Bullfinch  Aug 2016
+//
+//
+//  Started Aug 2016
+//
+//  Last Mod Sept 2016
+//
+//
+//  Coded for C++ v11
+//
+//
+
+
+
+
+const double pi = 3.14159;
+// does this game use Pi? Don't care.
+// I will MAKE the program use Pi. It may end up being a password.
+
+bool runGame(true);
+// keeps game running until set to (false)
+
+string wordArray[12]; //= {'zero', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' } // actually makes 13 words
+
+char userInput[64];
+
+
+
+void titleText()
+{
+    cout << "  _____________ \n";
+    cout << "   \n";
+    cout << "  TEXT GAME ONE \n";
+    cout << "  \n";
+    cout << "  By Zak B.     \n";
+    cout << "  _____________ \n";
+    cout << " \n";
+    cout << " \n";
+}
+
+void introText()
+{
+    cout << "  Welcome to Game One. \n";
+    cout << " \n";
+    cout << "  Use simple sentences to act and interact, such as \n";
+    cout << " \n";
+    cout << "  > pick up book \n";
+    cout << "  > exit blue door \n";
+    cout << "  > eat the banana \n";
+    cout << "  > go west \n";
+    cout << " \n";
+    cout << "  > look - gives a brief description of surroundings, and \n";
+    cout << "  > examine [a thing] will give you a better description of the thing. \n";
+    cout << "  > inventory, or > inv - will list the items you carry. \n";
+    cout << " \n";
+    cout << "  To get help enter > help or > h. \n";
+    cout << "  To get a vague hint enter > hint. \n";
+    cout << "  The entry > gloss will list [most] of the game's vocabulary. \n";
+    cout << " \n";
+    cout << "  > save will [one day] save the game. \n";
+    cout << "  > quit will quit the game. \n";
+    cout << " \n";
+    cout << " \n";
+}
+
+void glossText()
+{
+   cout << "  Glossary of useful words in the game. \n";
+   cout << "  \n";
+   cout << "  > go      [direction - north, west, up, down, towards the thing] \n";
+   cout << " \n";
+   cout << "  Inventory commands. \n";
+   cout << " \n";
+   cout << "  > inv, or > inventory, will list items you have on you.\n";
+   cout << "            There are several items that can carry extra inventory, \n";
+   cout << "            such as a backpack. Such items can only carry so much stuff.\n";
+   cout << "            Storage devices cannot be stored inside other storage devices.\n";
+   cout << " \n";
+   cout << "  > take    [apple, bottle, ] takes item from environment, into your hands.\n";
+   cout << "  > drop    [apple, brick, lead ingot, ] drops item into environment. \n";
+   cout << "  > store   [apple in pocket, bottle in rucksack] \n";
+   cout << "            > store [item] will also move an item from one storage device \n";
+   cout << "            to another. \n";
+   cout << "            > 'store apple in backpack' will move an apple from a pocket to \n";
+   cout << "            your backpack. \n";
+   cout << "  > get [item] will get a thing from your inventory into your hands for use. \n";
+   cout << "  \n";
+   cout << "  > use [item in hand] [to] [open lock, light lamp, make fire] \n";
+   cout << " \n";
+   cout << " Exploring things.\n";
+   cout << " \n";
+   cout << "  > look     will give you a description of where you are. \n";
+   cout << "  > examine [an item]  will describe a thing in more detail, and perhaps \n";
+   cout << "            explain how it can be used, such as a 'cloak' or 'lever'. \n";
+   cout << " \n";
+   cout << " \n";
+   cout << "  > pull [a thing] \n";
+   cout << "  > push [something] \n";
+   cout << "  > read [the scroll, the sign, the runes] \n";
+   cout << " \n";
+   cout << "  We hope this helps ! \n";
+   cout << " \n";
+   cout << " \n";
+
+}
+
+
+// THIS ISN"T WORKING PROPERLY YET.
+void startGame()
+{
+    cout << " \n";
+    cout << " \n";
+    cout << "  Ready to start? Hit [enter] when ready > ";
+    char ready[1] { 'x' };
+    cin.getline (ready, 1);
+    cout << " \n";
+}
+
+
+void getPlayerName()
+{
+    char playerName[32] = "player";
+    cout << " \n";
+    cout << "  What is your character name? > ";
+    cin.getline (playerName, 32);
+    cout << " \n";
+    cout << "  Hello " << playerName << ". \n";
+    cout << " \n";
+    cout << " \n";
+}
+
+
+void getInput()
+{
+    cout << "  > ";
+    cin.getline(userInput, 64);
+    cout << " \n";
+}
+
+void wordsInput()
+{
+    // Use word array for 12 words - string wordNumber[]
+    // Make all into UPPERCASE.
+    // Slice up userInput into individual words,
+    // put into array called wordArray[]
+
+    int readChar = 0;        // read counts the position in the string.
+    int wordCount = 0;   // The word we are building and working on.
+    int tempChar;     // a temporary holder for the current position.
+
+    // Turn all lower case letters into UPPERCASE
+    while (readChar < 64)
+    {
+        tempChar = static_cast<int>(userInput[readChar]);
+
+        if (tempChar >= 97 && tempChar <=122)
+            {
+                tempChar = tempChar - 32;
+                userInput[readChar] = static_cast<char>(tempChar);
+            }
+        else{};
+
+
+        cout << "readChar = " << readChar << endl;
+        cout << "tempChar = " << tempChar << endl;
+        cout << "userInput[readChar] = " << userInput[readChar] << endl;
+        cout << " " << endl;
+
+        readChar = readChar + 1;
+    }
+
+    // Divide userInput[] string into individual words in wordArray
+    // Build words in wordNumber{} array
+    // Looks for spaces and punctuation, and end of string.
+    bool letsDoThis(true);
+    int wordNum = 0;
+    readChar = 0;
+    string tempStr[1];    // might need to nuke this
+
+
+    while ( letsDoThis == 1 )
+    {
+
+        tempStr[0] = userInput[readChar];
+
+        if ( tempChar != 32 )   // 32 is the Space character
+        {
+            strcat( wordArray[wordNum], tempStr[1] );
+        }
+        else if ( tempChar == 32 )
+        {
+            wordNum++;
+        }
+        else if ( tempChar == ( "." || "\n") )
+        {
+            letsDoThis = 0;
+        }
+
+
+
+    }
+
+}
+
+void parseWords()
+{
+    //  Use input words to perform actions.
+}
+
+void endGame()
+{
+    cout << "  \n";
+    cout << "  Game Terminated. Goodbye world. \n";
+    cout << "  \n";
+}
+
+
+int main()
+{
+    titleText();
+
+    introText();
+
+    startGame();     //  < THIS ISN"T WORKING CORRECTLY
+
+    getPlayerName();
+
+    // worldLoad();
+    // Or create from random...
+
+
+
+    //glossText();
+
+    if (runGame)  //  Boolean switch.
+    {
+        getInput();
+
+        wordsInput();
+
+        parseWords();
+    }
+
+    else
+    {
+        endGame();
+    }
+
+
+
+
+
+    cout << " \n";
+    cout << "_________________________________________________ \n";
+    cout << " \n";
+    cout << "END OF PROGRAM \n";
+    return 0;
+}
